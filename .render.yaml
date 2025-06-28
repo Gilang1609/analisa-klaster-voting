@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: analisa-klaster
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: COHERE_KEY
+        sync: false  # biar kamu bisa isi nanti lewat dashboard Render
