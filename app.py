@@ -1,13 +1,13 @@
-from flask import Flask, request, jsonify
-from analyzer import analisa
+from fastapi import FastAPI, Request
+from analyzer import run_clustering  # fungsi ini harus ada di analyzer.py
+import uvicorn
 
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route("/analisa", methods=["POST"])
-def route_analisa():
-    data = request.get_json() or {}
-    result = analisa(data.get("texts", []), data.get("embeddings", []))
-    return jsonify(result)
-
-# if __name__ == "__main__":
-#     app.run()
+@app.post("/analisis")
+async def analisis(request: Request):
+    data = await request.json()
+    texts = data.get("texts", [])
+    embeddings = data.get("embeddings", [])
+    result = run_clustering(texts, embeddings)
+    return result
